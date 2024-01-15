@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -18,6 +19,7 @@ public class OmdbApi {
   @Value("${omdb.url}")
   private String url;
 
+  @Cacheable(cacheNames = "movie", key = "#title")
   public Map<String, Object> getMovieInfoByTitle(String title) {
     return restTemplate.getForObject(url, Map.class, title);
   }
